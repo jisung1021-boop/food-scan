@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FOOD SCAN - 스마트 음식 칼로리 & 영양 분석</title>
+  <!-- Google Fonts & System Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Header / Navigation -->
+  <header class="app-header">
+    <div class="header-inner container">
+      <div class="brand" id="brand-logo" role="button" tabindex="0" title="홈으로 이동">
+        <div class="logo-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+            <circle cx="12" cy="12" r="3" fill="#10B981" stroke="none"/>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <span class="brand-title">FOOD <span class="brand-accent">SCAN</span></span>
+          <span class="brand-badge">PRO</span>
+        </div>
+      </div>
+
+      <nav class="nav-menu" id="desktop-nav">
+        <button class="nav-link active" data-view="dashboard">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>
+          대시보드
+        </button>
+        <button class="nav-link" data-view="search">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          음식 검색
+        </button>
+        <button class="nav-link" data-view="records">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+          식단 기록
+        </button>
+        <button class="nav-link" data-view="stats">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>
+          영양 통계
+        </button>
+      </nav>
+
+      <div class="header-actions">
+        <div class="date-badge" id="header-date-badge" title="날짜 변경">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          <span id="current-date-text">2026. 11. 16 (월)</span>
+        </div>
+        <button class="btn btn-primary" id="btn-quick-add">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          <span>음식 추가</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Container (SPA Views) -->
+  <main class="main-content container">
+
+    <!-- VIEW 1: 대시보드 (Dashboard) -->
+    <section class="view active" id="view-dashboard">
+      <!-- Slogan Hero Banner -->
+      <div class="hero-banner">
+        <div class="hero-content">
+          <div class="hero-tag">
+            <span class="dot"></span>
+            스마트 식단 관리 솔루션
+          </div>
+          <h1 class="hero-title">사진 한 장보다 간편하게,<br><span class="highlight">나의 식단</span>을 스마트하게 관리하다</h1>
+          <p class="hero-desc">12가지 주요 한식 데이터와 섭취량 계산으로 오늘의 칼로리 및 영양 균형을 한눈에 파악하세요.</p>
+          <div class="hero-buttons">
+            <button class="btn btn-primary" onclick="app.switchView('search')">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              음식 검색 & 섭취량 계산
+            </button>
+            <button class="btn btn-secondary" onclick="app.switchView('records')">
+              식단 기록 확인
+            </button>
+          </div>
+        </div>
+        <div class="hero-graphic">
+          <div class="floating-badge badge-top">
+            <span class="icon">🥗</span>
+            <div>
+              <strong>비빔밥 1인분</strong>
+              <small>550 kcal</small>
+            </div>
+          </div>
+          <div class="circle-visual">
+            <div class="pulse-ring"></div>
+            <div class="center-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+            </div>
+          </div>
+          <div class="floating-badge badge-bottom">
+            <span class="icon">🔥</span>
+            <div>
+              <strong>오늘 달성률</strong>
+              <small id="hero-progress-text">0% 완료</small>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Date Switcher Bar -->
+      <div class="date-navigator card">
+        <button class="btn-icon" id="btn-prev-day" title="이전 날">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <div class="date-display">
+          <input type="date" id="dashboard-date-picker" class="hidden-date-input">
+          <label for="dashboard-date-picker" class="date-label-wrapper" title="달력에서 날짜 선택">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            <span id="dashboard-selected-date">2026년 11월 16일 (월요일)</span>
+            <span class="chip-today" id="chip-today-indicator">오늘</span>
+          </label>
+        </div>
+        <div class="date-nav-right">
+          <button class="btn btn-subtle btn-sm" id="btn-go-today">오늘로</button>
+          <button class="btn-icon" id="btn-next-day" title="다음 날">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Main Nutrition Status Cards -->
+      <div class="dashboard-grid">
+        <!-- Main Calorie Card -->
+        <div class="card calorie-overview-card">
+          <div class="card-header">
+            <div>
+              <span class="card-eyebrow">오늘의 섭취 현황</span>
+              <h2 class="card-title">총 섭취 칼로리</h2>
+            </div>
+            <span class="target-badge">목표: <strong id="val-target-cal">2,000</strong> kcal</span>
+          </div>
+
+          <div class="calorie-main-content">
+            <div class="calorie-circle-container">
+              <svg class="progress-ring" viewBox="0 0 160 160">
+                <circle class="progress-ring-bg" cx="80" cy="80" r="68" />
+                <circle class="progress-ring-fill" id="cal-ring-fill" cx="80" cy="80" r="68" stroke-dasharray="427.26" stroke-dashoffset="427.26" />
+              </svg>
+              <div class="calorie-circle-text">
+                <span class="cal-val" id="val-total-calories">0</span>
+                <span class="cal-unit">kcal</span>
+                <span class="cal-percent" id="val-calorie-percentage">0%</span>
+              </div>
+            </div>
+
+            <div class="calorie-stats-list">
+              <div class="stat-row">
+                <span class="stat-label">권장 칼로리</span>
+                <span class="stat-value">2,000 kcal</span>
+              </div>
+              <div class="stat-row">
+                <span class="stat-label">남은 칼로리</span>
+                <span class="stat-value highlight" id="val-remaining-calories">2,000 kcal</span>
+              </div>
+              <div class="stat-row">
+                <span class="stat-label">기록된 음식 수</span>
+                <span class="stat-value" id="val-total-food-count">0개</span>
+              </div>
+              <div class="stat-status-pill" id="val-calorie-status">식단을 기록해보세요</div>
+            </div>
+          </div>
+
+          <!-- Macro Nutrients Mini Progress Bars -->
+          <div class="macros-summary-wrapper">
+            <h3 class="section-subheading">탄단지 3대 영양소 섭취 현황</h3>
+            <div class="macros-grid">
+              <div class="macro-card carb">
+                <div class="macro-header">
+                  <span class="macro-name">🌾 탄수화물</span>
+                  <span class="macro-amount"><strong id="val-carb">0</strong> / 250g</span>
+                </div>
+                <div class="progress-bar-track">
+                  <div class="progress-bar-fill carb-fill" id="bar-carb" style="width: 0%"></div>
+                </div>
+                <div class="macro-footer">
+                  <span id="percent-carb">0%</span>
+                  <span class="macro-target">권장 50%</span>
+                </div>
+              </div>
+
+              <div class="macro-card protein">
+                <div class="macro-header">
+                  <span class="macro-name">🍗 단백질</span>
+                  <span class="macro-amount"><strong id="val-protein">0</strong> / 100g</span>
+                </div>
+                <div class="progress-bar-track">
+                  <div class="progress-bar-fill protein-fill" id="bar-protein" style="width: 0%"></div>
+                </div>
+                <div class="macro-footer">
+                  <span id="percent-protein">0%</span>
+                  <span class="macro-target">권장 20%</span>
+                </div>
+              </div>
+
+              <div class="macro-card fat">
+                <div class="macro-header">
+                  <span class="macro-name">🥑 지방</span>
+                  <span class="macro-amount"><strong id="val-fat">0</strong> / 65g</span>
+                </div>
+                <div class="progress-bar-track">
+                  <div class="progress-bar-fill fat-fill" id="bar-fat" style="width: 0%"></div>
+                </div>
+                <div class="macro-footer">
+                  <span id="percent-fat">0%</span>
+                  <span class="macro-target">권장 30%</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Meal Type Breakdown Cards (아침, 점심, 저녁, 간식) -->
+        <div class="card meal-slots-card">
+          <div class="card-header">
+            <div>
+              <span class="card-eyebrow">시간대별 섭취량</span>
+              <h2 class="card-title">식사별 분석</h2>
+            </div>
+            <button class="btn btn-subtle btn-sm" onclick="app.switchView('search')">+ 새 메뉴</button>
+          </div>
+
+          <div class="meal-slots-grid">
+            <!-- Breakfast -->
+            <div class="meal-slot-item" data-meal="아침">
+              <div class="meal-slot-icon morning">🌅</div>
+              <div class="meal-slot-info">
+                <div class="meal-slot-title">아침 식사</div>
+                <div class="meal-slot-cal"><strong id="meal-cal-breakfast">0</strong> kcal</div>
+                <div class="meal-slot-items" id="meal-items-breakfast">기록 없음</div>
+              </div>
+              <button class="btn-meal-add" onclick="app.openAddMealModal('아침')" title="아침 식단 추가">+</button>
+            </div>
+
+            <!-- Lunch -->
+            <div class="meal-slot-item" data-meal="점심">
+              <div class="meal-slot-icon lunch">☀️</div>
+              <div class="meal-slot-info">
+                <div class="meal-slot-title">점심 식사</div>
+                <div class="meal-slot-cal"><strong id="meal-cal-lunch">0</strong> kcal</div>
+                <div class="meal-slot-items" id="meal-items-lunch">기록 없음</div>
+              </div>
+              <button class="btn-meal-add" onclick="app.openAddMealModal('점심')" title="점심 식단 추가">+</button>
+            </div>
+
+            <!-- Dinner -->
+            <div class="meal-slot-item" data-meal="저녁">
+              <div class="meal-slot-icon dinner">🌙</div>
+              <div class="meal-slot-info">
+                <div class="meal-slot-title">저녁 식사</div>
+                <div class="meal-slot-cal"><strong id="meal-cal-dinner">0</strong> kcal</div>
+                <div class="meal-slot-items" id="meal-items-dinner">기록 없음</div>
+              </div>
+              <button class="btn-meal-add" onclick="app.openAddMealModal('저녁')" title="저녁 식단 추가">+</button>
+            </div>
+
+            <!-- Snack -->
+            <div class="meal-slot-item" data-meal="간식">
+              <div class="meal-slot-icon snack">🥪</div>
+              <div class="meal-slot-info">
+                <div class="meal-slot-title">간식 / 기타</div>
+                <div class="meal-slot-cal"><strong id="meal-cal-snack">0</strong> kcal</div>
+                <div class="meal-slot-items" id="meal-items-snack">기록 없음</div>
+              </div>
+              <button class="btn-meal-add" onclick="app.openAddMealModal('간식')" title="간식 식단 추가">+</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Today's Log Summary section -->
+      <div class="card recent-logs-card">
+        <div class="card-header">
+          <div>
+            <span class="card-eyebrow">선택한 날짜의 식단</span>
+            <h2 class="card-title">오늘의 식단 타임라인</h2>
+          </div>
+          <button class="btn btn-outline btn-sm" onclick="app.switchView('records')">전체 기록 보기 →</button>
+        </div>
+
+        <div id="dashboard-recent-list" class="recent-list-container">
+          <!-- Filled dynamically via JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW 2: 음식 검색 및 선택 (Search & Catalog) -->
+    <section class="view" id="view-search">
+      <div class="page-heading">
+        <div class="heading-text">
+          <h1 class="page-title">음식 검색 & 섭취량 계산</h1>
+          <p class="page-desc">원하는 음식을 검색하거나 카테고리별로 둘러보고, 섭취량을 설정하여 칼로리를 계산하세요.</p>
+        </div>
+        <!-- Photo Preview / Upload demo widget -->
+        <div class="photo-demo-trigger">
+          <input type="file" id="demo-photo-input" accept="image/*" class="sr-only">
+          <label for="demo-photo-input" class="btn btn-secondary btn-icon-lead" title="식단 사진 미리보기 첨부">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+            <span>식단 사진 첨부</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Search & Filter Controls -->
+      <div class="search-filter-panel card">
+        <div class="search-input-wrapper">
+          <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" id="food-search-input" placeholder="음식 이름을 검색하세요 (예: 비빔밥, 김치찌개, 돈가스...)" autocomplete="off">
+          <button class="btn-clear-search hidden" id="btn-clear-search" title="검색어 지우기">&times;</button>
+        </div>
+
+        <div class="filter-sort-row">
+          <div class="category-pills" id="category-pills">
+            <!-- Category buttons dynamically or static -->
+            <button class="pill active" data-category="전체">전체 (12)</button>
+            <button class="pill" data-category="밥류">밥류</button>
+            <button class="pill" data-category="찌개/국">찌개/국</button>
+            <button class="pill" data-category="고기류">고기류</button>
+            <button class="pill" data-category="분식/면">분식/면</button>
+            <button class="pill" data-category="일품">일품</button>
+          </div>
+
+          <div class="sort-selector">
+            <label for="food-sort-select" class="sort-label">정렬:</label>
+            <select id="food-sort-select" class="select-styled">
+              <option value="default">기본 추천순</option>
+              <option value="cal-asc">칼로리 낮은순</option>
+              <option value="cal-desc">칼로리 높은순</option>
+              <option value="protein-desc">단백질 높은순</option>
+              <option value="name-asc">가나다순</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Food Gallery Grid -->
+      <div class="food-grid" id="food-gallery-grid">
+        <!-- Filled dynamically by foodData.js -->
+      </div>
+    </section>
+
+    <!-- VIEW 3: 식단 기록 (Diet Log) -->
+    <section class="view" id="view-records">
+      <div class="page-heading">
+        <div class="heading-text">
+          <h1 class="page-title">식단 기록 관리</h1>
+          <p class="page-desc">날짜별로 저장된 식단 내역을 확인하고 섭취량 및 칼로리를 관리합니다.</p>
+        </div>
+        <div class="records-actions">
+          <button class="btn btn-outline btn-sm" id="btn-load-sample-data" title="시연용 7일 샘플 데이터 자동 생성">
+            ✨ 시연용 샘플 채우기
+          </button>
+          <button class="btn btn-danger-subtle btn-sm" id="btn-clear-all-records" title="모든 기록 초기화">
+            전체 초기화
+          </button>
+        </div>
+      </div>
+
+      <!-- Records Date Selector Card -->
+      <div class="date-navigator card">
+        <button class="btn-icon" id="records-prev-day" title="이전 날">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <div class="date-display">
+          <input type="date" id="records-date-picker" class="hidden-date-input">
+          <label for="records-date-picker" class="date-label-wrapper">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            <span id="records-selected-date">2026년 11월 16일 (월요일)</span>
+          </label>
+        </div>
+        <div class="date-nav-right">
+          <button class="btn btn-subtle btn-sm" id="records-go-today">오늘</button>
+          <button class="btn-icon" id="records-next-day" title="다음 날">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Daily Summary Stats Ribbon -->
+      <div class="summary-ribbon card">
+        <div class="ribbon-item">
+          <span class="ribbon-label">총 섭취 칼로리</span>
+          <span class="ribbon-value highlight"><strong id="rec-total-cal">0</strong> kcal</span>
+        </div>
+        <div class="ribbon-divider"></div>
+        <div class="ribbon-item">
+          <span class="ribbon-label">탄수화물</span>
+          <span class="ribbon-value"><strong id="rec-total-carb">0</strong> g</span>
+        </div>
+        <div class="ribbon-divider"></div>
+        <div class="ribbon-item">
+          <span class="ribbon-label">단백질</span>
+          <span class="ribbon-value"><strong id="rec-total-protein">0</strong> g</span>
+        </div>
+        <div class="ribbon-divider"></div>
+        <div class="ribbon-item">
+          <span class="ribbon-label">지방</span>
+          <span class="ribbon-value"><strong id="rec-total-fat">0</strong> g</span>
+        </div>
+      </div>
+
+      <!-- Meal Sections (아침, 점심, 저녁, 간식) -->
+      <div class="meal-log-sections" id="meal-log-sections">
+        <!-- Loaded dynamically -->
+      </div>
+    </section>
+
+    <!-- VIEW 4: 영양 통계 (Nutrition Stats) -->
+    <section class="view" id="view-stats">
+      <div class="page-heading">
+        <div class="heading-text">
+          <h1 class="page-title">영양 통계 & 분석</h1>
+          <p class="page-desc">최근 7일간의 칼로리 섭취 추이와 3대 영양소 밸런스를 분석합니다.</p>
+        </div>
+      </div>
+
+      <!-- Weekly Calorie Bar Chart -->
+      <div class="card chart-card">
+        <div class="card-header">
+          <div>
+            <span class="card-eyebrow">트렌드 분석</span>
+            <h2 class="card-title">최근 7일간 섭취 칼로리 추이</h2>
+          </div>
+          <div class="chart-legend-badge">
+            <span class="legend-line"></span> 권장 목표선 (2,000 kcal)
+          </div>
+        </div>
+
+        <div class="weekly-chart-wrapper">
+          <div class="chart-container" id="weekly-bar-chart">
+            <!-- 7 Bar items rendered via JS -->
+          </div>
+        </div>
+
+        <div class="chart-metrics-grid">
+          <div class="metric-card">
+            <span class="metric-label">7일 평균 섭취량</span>
+            <span class="metric-val" id="metric-avg-cal">0 kcal</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">최다 섭취일</span>
+            <span class="metric-val" id="metric-max-day">-</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">목표 달성일</span>
+            <span class="metric-val highlight" id="metric-achieve-days">0일</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">총 기록 건수</span>
+            <span class="metric-val" id="metric-total-records">0건</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Today Nutrition Breakdown (Donut & Meal Comparison) -->
+      <div class="stats-two-col">
+        <!-- Macro Donut Ratio -->
+        <div class="card macro-analysis-card">
+          <div class="card-header">
+            <div>
+              <span class="card-eyebrow">영양 비율</span>
+              <h2 class="card-title">탄·단·지 에너지 비율</h2>
+            </div>
+            <span class="chip-sm" id="stats-current-date-chip">오늘 기준</span>
+          </div>
+
+          <div class="macro-donut-wrapper">
+            <div class="donut-chart-container">
+              <svg class="donut-chart" viewBox="0 0 180 180">
+                <circle class="donut-hole" cx="90" cy="90" r="60" fill="#ffffff"></circle>
+                <!-- SVG Circles with stroke-dasharray and stroke-dashoffset -->
+                <circle id="donut-carb" class="donut-segment carb" cx="90" cy="90" r="60" stroke-width="24"></circle>
+                <circle id="donut-protein" class="donut-segment protein" cx="90" cy="90" r="60" stroke-width="24"></circle>
+                <circle id="donut-fat" class="donut-segment fat" cx="90" cy="90" r="60" stroke-width="24"></circle>
+              </svg>
+              <div class="donut-center-info">
+                <span class="donut-center-label">총 섭취</span>
+                <strong class="donut-center-val" id="donut-center-cal">0</strong>
+                <span class="donut-center-unit">kcal</span>
+              </div>
+            </div>
+
+            <div class="donut-legend">
+              <div class="legend-row">
+                <span class="legend-color-dot carb"></span>
+                <span class="legend-text">탄수화물 (Carb)</span>
+                <strong class="legend-ratio" id="legend-carb-pct">0%</strong>
+                <span class="legend-grams" id="legend-carb-g">0g</span>
+              </div>
+              <div class="legend-row">
+                <span class="legend-color-dot protein"></span>
+                <span class="legend-text">단백질 (Protein)</span>
+                <strong class="legend-ratio" id="legend-protein-pct">0%</strong>
+                <span class="legend-grams" id="legend-protein-g">0g</span>
+              </div>
+              <div class="legend-row">
+                <span class="legend-color-dot fat"></span>
+                <span class="legend-text">지방 (Fat)</span>
+                <strong class="legend-ratio" id="legend-fat-pct">0%</strong>
+                <span class="legend-grams" id="legend-fat-g">0g</span>
+              </div>
+              <div class="nutrition-guide-tip">
+                💡 <strong>권장 영양 배분:</strong> 탄수화물 50% / 단백질 20% / 지방 30%
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Meal Type Calorie Comparison -->
+        <div class="card meal-distribution-card">
+          <div class="card-header">
+            <div>
+              <span class="card-eyebrow">식사별 비중</span>
+              <h2 class="card-title">식사 시간대별 칼로리 분포</h2>
+            </div>
+          </div>
+
+          <div class="meal-bar-list" id="meal-distribution-bars">
+            <!-- Breakfast Bar -->
+            <div class="meal-dist-item">
+              <div class="meal-dist-meta">
+                <span class="name">🌅 아침</span>
+                <span class="val"><strong id="stats-meal-cal-breakfast">0</strong> kcal (<span id="stats-meal-pct-breakfast">0%</span>)</span>
+              </div>
+              <div class="dist-track">
+                <div class="dist-fill morning" id="stats-meal-bar-breakfast" style="width: 0%"></div>
+              </div>
+            </div>
+
+            <!-- Lunch Bar -->
+            <div class="meal-dist-item">
+              <div class="meal-dist-meta">
+                <span class="name">☀️ 점심</span>
+                <span class="val"><strong id="stats-meal-cal-lunch">0</strong> kcal (<span id="stats-meal-pct-lunch">0%</span>)</span>
+              </div>
+              <div class="dist-track">
+                <div class="dist-fill lunch" id="stats-meal-bar-lunch" style="width: 0%"></div>
+              </div>
+            </div>
+
+            <!-- Dinner Bar -->
+            <div class="meal-dist-item">
+              <div class="meal-dist-meta">
+                <span class="name">🌙 저녁</span>
+                <span class="val"><strong id="stats-meal-cal-dinner">0</strong> kcal (<span id="stats-meal-pct-dinner">0%</span>)</span>
+              </div>
+              <div class="dist-track">
+                <div class="dist-fill dinner" id="stats-meal-bar-dinner" style="width: 0%"></div>
+              </div>
+            </div>
+
+            <!-- Snack Bar -->
+            <div class="meal-dist-item">
+              <div class="meal-dist-meta">
+                <span class="name">🥪 간식</span>
+                <span class="val"><strong id="stats-meal-cal-snack">0</strong> kcal (<span id="stats-meal-pct-snack">0%</span>)</span>
+              </div>
+              <div class="dist-track">
+                <div class="dist-fill snack" id="stats-meal-bar-snack" style="width: 0%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Mobile Bottom Tab Navigation -->
+  <nav class="mobile-bottom-nav" id="mobile-nav">
+    <button class="mobile-tab active" data-view="dashboard">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>
+      <span>대시보드</span>
+    </button>
+    <button class="mobile-tab" data-view="search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <span>음식 검색</span>
+    </button>
+    <button class="mobile-tab" data-view="records">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+      <span>식단 기록</span>
+    </button>
+    <button class="mobile-tab" data-view="stats">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>
+      <span>영양 통계</span>
+    </button>
+  </nav>
+
+  <!-- MODAL: 음식 상세 및 섭취량 계산 (Intake Calculator Modal) -->
+  <div class="modal-backdrop hidden" id="modal-calculator">
+    <div class="modal-dialog card">
+      <button class="btn-modal-close" id="btn-close-calc" title="닫기">&times;</button>
+
+      <div class="modal-header-hero">
+        <img id="calc-food-img" src="" alt="음식 사진" class="modal-food-img">
+        <div class="modal-food-badge-wrapper">
+          <span class="badge-category" id="calc-food-category">카테고리</span>
+          <h2 class="modal-food-title" id="calc-food-name">음식 이름</h2>
+          <p class="modal-food-desc" id="calc-food-desc">음식 설명</p>
+        </div>
+      </div>
+
+      <div class="modal-body">
+        <!-- 1-serving base nutrition reference -->
+        <div class="base-nutrition-box">
+          <span class="base-nutrition-title">1인분 기본 영양 정보 (<span id="calc-base-unit">기준량</span>)</span>
+          <div class="base-nutrition-pills">
+            <span class="pill-mini">칼로리: <strong id="calc-base-cal">550</strong> kcal</span>
+            <span class="pill-mini">탄수화물: <strong id="calc-base-carb">85</strong>g</span>
+            <span class="pill-mini">단백질: <strong id="calc-base-protein">18</strong>g</span>
+            <span class="pill-mini">지방: <strong id="calc-base-fat">15</strong>g</span>
+          </div>
+        </div>
+
+        <!-- Meal Type & Date Selection -->
+        <div class="form-row">
+          <div class="form-group flex-1">
+            <label class="form-label">식사 유형 선택 <span class="required">*</span></label>
+            <div class="meal-type-selector" id="calc-meal-types">
+              <button type="button" class="btn-meal-type active" data-meal="아침">🌅 아침</button>
+              <button type="button" class="btn-meal-type" data-meal="점심">☀️ 점심</button>
+              <button type="button" class="btn-meal-type" data-meal="저녁">🌙 저녁</button>
+              <button type="button" class="btn-meal-type" data-meal="간식">🥪 간식</button>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="calc-record-date">섭취 날짜</label>
+            <input type="date" id="calc-record-date" class="form-input-styled">
+          </div>
+        </div>
+
+        <!-- Intake Portion / Serving Calculator Section -->
+        <div class="serving-calculator-section">
+          <label class="form-label">
+            섭취량 설정
+            <span class="sub-label">버튼을 누르거나 직접 숫자를 입력하세요</span>
+          </label>
+
+          <!-- Quick Presets -->
+          <div class="portion-presets">
+            <button type="button" class="btn-portion" data-portion="0.5">0.5인분 (반 그릇)</button>
+            <button type="button" class="btn-portion active" data-portion="1">1인분 (정량)</button>
+            <button type="button" class="btn-portion" data-portion="1.5">1.5인분 (곱빼기)</button>
+            <button type="button" class="btn-portion" data-portion="2">2인분 (2그릇)</button>
+          </div>
+
+          <!-- Quantity Stepper / Direct Input -->
+          <div class="portion-stepper-row">
+            <button type="button" class="btn-step" id="btn-portion-minus" title="0.1인분 감소">−</button>
+            <div class="portion-input-wrap">
+              <input type="number" id="input-portion-qty" value="1.0" min="0.1" max="10.0" step="0.1" inputmode="decimal">
+              <span class="unit-text">인분</span>
+            </div>
+            <button type="button" class="btn-step" id="btn-portion-plus" title="0.1인분 증가">+</button>
+          </div>
+        </div>
+
+        <!-- Dynamic Real-time Calculation Result Box -->
+        <div class="calculation-result-box">
+          <div class="calc-res-header">
+            <span class="calc-res-label">계산된 총 섭취 칼로리</span>
+            <div class="calc-res-calorie">
+              <strong id="calc-res-total-cal">550</strong>
+              <span class="unit">kcal</span>
+            </div>
+          </div>
+
+          <!-- Macro recalculations -->
+          <div class="calc-res-macros">
+            <div class="calc-macro-item">
+              <span class="name">탄수화물</span>
+              <strong class="val" id="calc-res-carb">85</strong><span class="unit">g</span>
+            </div>
+            <div class="calc-macro-divider"></div>
+            <div class="calc-macro-item">
+              <span class="name">단백질</span>
+              <strong class="val" id="calc-res-protein">18</strong><span class="unit">g</span>
+            </div>
+            <div class="calc-macro-divider"></div>
+            <div class="calc-macro-item">
+              <span class="name">지방</span>
+              <strong class="val" id="calc-res-fat">15</strong><span class="unit">g</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Optional Meal Photo Attachment & Memo -->
+        <div class="optional-fields-accordion">
+          <div class="form-group">
+            <label class="form-label" for="calc-photo-file">
+              식단 사진 첨부 <small class="text-muted">(선택 사항 - 직접 찍은 사진 추가)</small>
+            </label>
+            <div class="photo-upload-zone" id="photo-upload-dropzone">
+              <input type="file" id="calc-photo-file" accept="image/*" class="sr-only">
+              <label for="calc-photo-file" class="photo-upload-label">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                <span id="photo-upload-hint">사진 첨부하기 (클릭하여 이미지 파일 선택)</span>
+              </label>
+              <div class="photo-preview-box hidden" id="photo-preview-container">
+                <img id="photo-preview-img" src="" alt="첨부 사진 미리보기">
+                <button type="button" class="btn-remove-photo" id="btn-remove-photo" title="사진 제거">&times;</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="calc-memo">메모 / 특이사항 <small class="text-muted">(선택)</small></label>
+            <input type="text" id="calc-memo" class="form-input-styled" placeholder="예: 밥 반 공기만 섭취, 양념 적게 등">
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-subtle" id="btn-cancel-calc">취소</button>
+        <button type="button" class="btn btn-primary btn-lg" id="btn-submit-add-food">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="20 6 9 17 4 12"/></svg>
+          식단에 기록 추가하기
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- Scripts -->
+  <script src="foodData.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
